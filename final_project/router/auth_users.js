@@ -55,6 +55,15 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   return res.status(400).json({message: "Internal error"});
 });
 
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+  const  user = req.session.authorization.username;
+  const bookisbn = req.params.isbn;
+  if(books[bookisbn]){
+    delete books[bookisbn].reviews[user];
+    return res.status(200).json({message:"Review deleted successfully"});
+  }
+  return res.status(404).json({message:"Not found"});
+})
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
 module.exports.users = users;
